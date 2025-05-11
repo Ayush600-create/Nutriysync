@@ -1,0 +1,51 @@
+INFO:werkzeug:[31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+INFO:werkzeug:[33mPress CTRL+C to quit[0m
+INFO:werkzeug: * Restarting with stat
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 111-538-675
+INFO:werkzeug:[31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+INFO:werkzeug:[33mPress CTRL+C to quit[0m
+INFO:werkzeug: * Restarting with stat
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 111-538-675
+INFO:werkzeug: * Detected change in 'C:\\Users\\ayush\\Desktop\\project1\\app.py', reloading
+INFO:werkzeug: * Restarting with stat
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 111-538-675
+INFO:werkzeug:[31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+INFO:werkzeug:[33mPress CTRL+C to quit[0m
+INFO:werkzeug: * Restarting with stat
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 111-538-675
+INFO:werkzeug: * Detected change in 'C:\\Users\\ayush\\Desktop\\project1\\app.py', reloading
+INFO:werkzeug: * Restarting with stat
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 111-538-675
+INFO:werkzeug: * Detected change in 'C:\\Users\\ayush\\Desktop\\project1\\app.py', reloading
+INFO:werkzeug: * Restarting with stat
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 111-538-675
+INFO:werkzeug:[31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+INFO:werkzeug:[33mPress CTRL+C to quit[0m
+INFO:werkzeug:[31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+INFO:werkzeug:[33mPress CTRL+C to quit[0m
+INFO:werkzeug:127.0.0.1 - - [20/Apr/2025 21:04:13] "GET / HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [20/Apr/2025 21:04:13] "[35m[1mGET /static/images/brain-icon.png HTTP/1.1[0m" 500 -
+INFO:werkzeug:127.0.0.1 - - [20/Apr/2025 21:04:15] "[35m[1mGET /favicon.ico HTTP/1.1[0m" 500 -
+ERROR:root:Diet generation failed: 'output'
+INFO:werkzeug:127.0.0.1 - - [20/Apr/2025 21:04:49] "POST /get_recommendations HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [20/Apr/2025 21:04:49] "[35m[1mGET /favicon.ico HTTP/1.1[0m" 500 -
+INFO:werkzeug:[31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+INFO:werkzeug:[33mPress CTRL+C to quit[0m
+INFO:werkzeug:127.0.0.1 - - [20/Apr/2025 21:18:50] "GET / HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [20/Apr/2025 21:18:50] "[35m[1mGET /static/images/brain-icon.png HTTP/1.1[0m" 500 -
+INFO:werkzeug:127.0.0.1 - - [20/Apr/2025 21:18:51] "[35m[1mGET /favicon.ico HTTP/1.1[0m" 500 -
+ERROR:root:Diet generation failed: 'output'
+INFO:werkzeug:127.0.0.1 - - [20/Apr/2025 21:19:51] "POST /get_recommendations HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [20/Apr/2025 21:19:52] "[35m[1mGET /favicon.ico HTTP/1.1[0m" 500 -

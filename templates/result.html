@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Your Personalized Diet Plan</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Tailwind CSS 2.2.19 -->
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <!-- Font Awesome 6.5.2 -->
+  <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.2/css/all.min.css" rel="stylesheet">
+  <!-- Google Fonts - Poppins -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+  <!-- Chart.js 4.4.3 -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
+  <style>
+    body { font-family: 'Poppins', sans-serif; background: #f8fafc; color: #22223b; }
+    .glass-card { background: rgba(255,255,255,0.92); backdrop-filter: blur(8px); box-shadow: 0 2px 20px rgba(31,38,135,0.1); border-radius: 1.2rem; }
+    .gradient-head { background: linear-gradient(to right,#67e8f9,#a5b4fc,#fbcfe8); }
+    .day-btn.active { background: linear-gradient(90deg, #38bdf8 0%, #818cf8 85%); color: #fff; box-shadow: 0 4px 10px rgba(59,130,246,0.13); }
+    .day-btn { transition: all 0.25s; }
+    .macro-label { font-size:0.95rem;font-weight:600;}
+    .macro-legend { display: inline-flex; align-items: center; margin-right: 1.2rem; margin-bottom: 0.7rem;}
+    .macro-dot { width: 12px; height: 12px; border-radius: 50%; display: inline-block; margin-right: 0.5rem; }
+    @media print {
+      body { background: none !important; }
+      .glass-card { background: white !important; box-shadow: none !important; }
+      .no-print { display: none !important; }
+    }
+  </style>
+</head>
+<body>
+  <div class="w-full max-w-4xl mx-auto py-10 px-4">
+    <!-- Header -->
+    <div class="text-center mb-6">
+      <h1 class="text-4xl font-bold mb-2 text-gray-800">Your Personalized Diet Plan</h1>
+      <p class="text-lg text-gray-600 mb-2">A tailored approach to your diet & wellness journey.</p>
+    </div>
+    <!-- Summary Cards -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-7">
+      <div class="glass-card p-6 flex flex-col items-center">
+        <i class="fas fa-weight text-3xl text-blue-400 mb-2"></i>
+        <div class="text-base font-semibold text-blue-700 mb-1">BMI Details</div>
+        <div>
+          Your BMI: <span class="font-bold">{% if bmi %}{{ bmi }}{% else %}Not calculated{% endif %}</span>
+        </div>
+        <div>Category: <span class="font-bold">{% if bmi_category %}{{ bmi_category }}{% else %}Unknown{% endif %}</span></div>
+      </div>
+      <div class="glass-card p-6 flex flex-col items-center">
+        <i class="fas fa-fire text-3xl text-green-400 mb-2"></i>
+        <div class="text-base font-semibold text-green-700 mb-1">Calorie Goals</div>
+        <div>
+          Maintenance: <span class="font-bold">{% if maintenance_calories %}{{ maintenance_calories }}{% else %}Not calculated{% endif %}</span> cal
+        </div>
+        <div>
+          Target: <span class="font-bold">{% if calorie_goal %}{{ calorie_goal }}{% else %}Not calculated{% endif %}</span> cal
+        </div>
+      </div>
+      <div class="glass-card p-6 flex flex-col items-center">
+        <i class="fas fa-tint text-3xl text-purple-400 mb-2"></i>
+        <div class="text-base font-semibold text-purple-700 mb-1">Daily Hydration</div>
+        <div>
+          Recommended water: <span class="font-bold">{% if water_liters %}{{ water_liters }}{% else %}Not calculated{% endif %}</span> liters
+        </div>
+        <div class="text-xs text-gray-500">
+          {% if water_liters %}
+          (About {{ water_liters * 4|round(1) }} glasses)
+          {% else %}(Calculation unavailable){% endif %}
+        </div>
+      </div>
+    </div>
+    <!-- Diet Type and Macronutrients -->
+    <div class="glass-card p-7 mb-8">
+      <div class="mb-5">
+        <div class="text-xl font-bold text-gray-800 mb-2">Recommended Diet Type</div>
+        <div class="bg-yellow-50 rounded-lg p-5 mb-2">
+          <div class="text-lg font-semibold text-yellow-700 mb-1">{% if recommended_diet_type %}{{ recommended_diet_type }}{% else %}Not specified{% endif %}</div>
+          <div class="text-gray-700 mb-2">{% if diet_description %}{{ diet_description }}{% else %}No description available{% endif %}</div>
+          <div class="font-semibold text-sm text-gray-700 mt-2 mb-1">Macronutrient Ratio:</div>
+          <div class="text-gray-700 mb-3">{% if macronutrient_ratio %}{{ macronutrient_ratio }}{% else %}Not calculated{% endif %}</div>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+              <div class="font-semibold text-green-700 mb-1"><i class="fas fa-check-circle mr-1"></i>Recommended Foods:</div>
+              <ul class="list-disc ml-5 text-gray-700">
+                {% if recommended_foods %}
+                  {% for food in recommended_foods %}
+                  <li>{{ food }}</li>
+                  {% endfor %}
+                {% else %}
+                  <li>No recommendations available</li>
+                {% endif %}
+              </ul>
+            </div>
+            <div>
+              <div class="font-semibold text-red-700 mb-1"><i class="fas fa-times-circle mr-1"></i>Foods to Avoid:</div>
+              <ul class="list-disc ml-5 text-gray-700">
+                {% if foods_to_avoid %}
+                  {% for food in foods_to_avoid %}
+                  <li>{{ food }}</li>
+                  {% endfor %}
+                {% else %}
+                  <li>No information available</li>
+                {% endif %}
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Macronutrient Pie Chart -->
+      <div class="mt-7">
+        <div class="text-base font-bold text-gray-800 mb-2 flex items-center">
+          <i class="fas fa-pie-chart mr-2 text-indigo-400"></i>Macronutrient Breakdown
+        </div>
+        <div class="flex flex-col md:flex-row md:items-center md:space-x-8">
+          <div class="mx-auto md:mx-0" style="width:220px;height:220px;">
+            <canvas id="macroPieChart" width="220" height="220"></canvas>
+          </div>
+          <div class="mt-4 md:mt-0">
+            <div class="macro-label mb-2">Macronutrient Distribution</div>
+            <div class="macro-legend"><span class="macro-dot" style="background:#60a5fa"></span>Carbs: 50%</div>
+            <div class="macro-legend"><span class="macro-dot" style="background:#34d399"></span>Protein: 22%</div>
+            <div class="macro-legend mb-2"><span class="macro-dot" style="background:#fcd34d"></span>Fat: 28%</div>
+            <div class="text-xs text-gray-500 mt-2">
+              Based on your target of <span class="font-bold">{% if calorie_goal %}{{ calorie_goal }}{% else %}---{% endif %}</span> calories/day
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- 7-Day Diet Plan with Tabs -->
+    <div class="glass-card p-7 mb-10">
+      <div class="mb-4 flex flex-wrap gap-3 items-center justify-center" id="dietDayBtns">
+        <button type="button" class="day-btn px-5 py-2 rounded-full font-bold text-sm bg-white border border-blue-200 active" data-day="1">Day 1</button>
+        <button type="button" class="day-btn px-5 py-2 rounded-full font-bold text-sm bg-white border border-blue-200" data-day="2">Day 2</button>
+        <button type="button" class="day-btn px-5 py-2 rounded-full font-bold text-sm bg-white border border-blue-200" data-day="3">Day 3</button>
+        <button type="button" class="day-btn px-5 py-2 rounded-full font-bold text-sm bg-white border border-blue-200" data-day="4">Day 4</button>
+        <button type="button" class="day-btn px-5 py-2 rounded-full font-bold text-sm bg-white border border-blue-200" data-day="5">Day 5</button>
+        <button type="button" class="day-btn px-5 py-2 rounded-full font-bold text-sm bg-white border border-blue-200" data-day="6">Day 6</button>
+        <button type="button" class="day-btn px-5 py-2 rounded-full font-bold text-sm bg-white border border-blue-200" data-day="7">Day 7</button>
+      </div>
+      <div>
+        <!-- Replacement for the error message section -->
+        <div id="meal-plan-container">
+          <div class="text-center p-5">
+            <h3 class="text-xl font-bold text-gray-800 mb-3">🍲 This is your 7-day diet plan based on your Indian cuisine preference and recommended Balanced Diet diet.</h3>
+            
+            <div class="bg-orange-50 border-l-4 border-orange-500 p-4 mb-5 rounded-md">
+              <div class="flex items-start">
+                <div class="flex-shrink-0">
+                  <i class="fas fa-exclamation-circle text-orange-500 mt-1"></i>
+                </div>
+                <div class="ml-3">
+                  <h3 class="text-base font-medium text-orange-800">Meal plan temporarily unavailable</h3>
+                  <p class="text-sm text-orange-700 mt-1">
+                    We're currently experiencing high demand for our meal planning service. Please check your plan and billing details or try again in a few minutes.
+                  </p>
+                  <p class="text-sm text-orange-700 mt-2">
+                    In the meantime, you can explore the sample meal recommendations below or ask Nutrina for general nutrition advice.
+                  </p>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Sample meal suggestions to show when actual plan is unavailable -->
+            <div class="mt-6 grid grid-cols-1 md:grid-cols-2 gap-5">
+              <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-100">
+                <h4 class="text-lg font-semibold text-green-700 mb-2">Breakfast Ideas</h4>
+                <ul class="list-disc ml-5 text-gray-700">
+                  <li>Masala dosa with coconut chutney</li>
+                  <li>Vegetable upma with mixed nuts</li>
+                  <li>Moong dal cheela with mint yogurt</li>
+                  <li>Oats idli with sambar</li>
+                </ul>
+              </div>
+              
+              <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-100">
+                <h4 class="text-lg font-semibold text-green-700 mb-2">Lunch Ideas</h4>
+                <ul class="list-disc ml-5 text-gray-700">
+                  <li>Brown rice with dal and vegetable curry</li>
+                  <li>Ragi roti with paneer bhurji</li>
+                  <li>Quinoa pulao with raita</li>
+                  <li>Multigrain paratha with baingan bharta</li>
+                </ul>
+              </div>
+            </div>
+            
+            <button class="mt-6 bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded-lg">
+              <i class="fas fa-redo mr-2"></i>Try Again
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Nutrition Assistant -->
+    <div class="glass-card p-7 mb-12">
+      <div class="flex items-center mb-4">
+        <i class="fas fa-robot text-2xl text-green-400 bg-green-100 rounded-full p-2 mr-3"></i>
+        <h2 class="text-xl font-bold text-gray-800">Ask Nutrina - Your Nutrition Assistant</h2>
+      </div>
+      <p class="text-gray-700 mb-4">Have questions about your meal plan or nutrition? Ask Nutrina!</p>
+      <!-- Assistant form and iframe -->
+      <div>
+        <div id="response-frame-container">
+          <iframe name="response-frame" id="response-frame" class="response-frame" style="display: none; border: none; width: 100%; min-height: 180px;"></iframe>
+        </div>
+        <form action="/ask-assistant" method="POST" target="response-frame" id="assistant-form" class="mb-6">
+          <input type="hidden" name="iframe_request" value="true">
+          <div class="flex flex-col md:flex-row gap-3">
+            <input type="text" id="user_query" name="user_query" placeholder="e.g., How can I increase protein in breakfast?" 
+                   class="flex-grow px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400">
+            <button type="submit" class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 font-bold">
+              Ask Nutrina
+            </button>
+          </div>
+        </form>
+        <div class="bg-gray-50 p-4 rounded-lg mb-6">
+          <div class="font-semibold text-gray-700 mb-2">Sample Questions:</div>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+            <div class="bg-gray-100 p-2 rounded cursor-pointer sample-question">How can I modify meals for diabetes?</div>
+            <div class="bg-gray-100 p-2 rounded cursor-pointer sample-question">What are good protein alternatives to paneer?</div>
+            <div class="bg-gray-100 p-2 rounded cursor-pointer sample-question">How can I increase fiber in my diet?</div>
+            <div class="bg-gray-100 p-2 rounded cursor-pointer sample-question">What's the best time to eat protein-rich foods?</div>
+          </div>
+        </div>
+        <div id="assistant-response-container" class="mt-5 hidden">
+          <div class="font-semibold text-gray-700 mb-2">Nutrina's Response:</div>
+          <div id="assistant-response" class="diet-assistant-response bg-gray-100"></div>
+        </div>
+      </div>
+    </div>
+    <!-- Footer -->
+    <footer class="text-center text-xs text-gray-500 mb-4">
+      Always consult with a healthcare professional before starting any new dietary plan.<br>
+      <a href="/" class="text-blue-500 hover:underline no-print">Back to Homepage</a>
+    </footer>
+  </div>
+  <script>
+    // Pie chart for macronutrients
+    document.addEventListener('DOMContentLoaded', function() {
+      if (window.Chart) {
+        const ctx = document.getElementById('macroPieChart');
+        if(ctx){
+          new Chart(ctx, {
+            type: 'pie',
+            data: {
+              labels: ['Carbs', 'Protein', 'Fat'],
+              datasets: [{
+                data: [50, 22, 28], // Placeholder, usually editable or rendered from backend data
+                backgroundColor: ['#60a5fa','#34d399','#fcd34d'],
+                borderWidth: 0
+              }]
+            },
+            options: {
+              responsive: false,
+              plugins: {
+                legend: { display: false }
+              },
+              cutout: '60%',
+            }
+          });
+        }
+      }
+    });
+    // Day-wise tab logic
+    document.addEventListener('DOMContentLoaded', function(){
+      const dayBtns = document.querySelectorAll('.day-btn');
+      dayBtns.forEach(btn=>{
+        btn.addEventListener('click',function(){
+          dayBtns.forEach(b=>b.classList.remove('active'));
+          this.classList.add('active');
+          // Optionally fire an API or backend call to fetch content for selected day
+          // If using plain template substitution, can adjust element visibility accordingly
+        });
+      });
+      // Nutrition assistant demo
+      const form = document.getElementById('assistant-form');
+      const iframe = document.getElementById('response-frame');
+      const responseDiv = document.getElementById('assistant-response');
+      const responseContainer = document.getElementById('assistant-response-container');
+      const userQueryInput = document.getElementById('user_query');
+      form.addEventListener('submit', function() {
+        responseDiv.innerHTML = '<div class="text-center py-4"><div class="inline-block animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-blue-500"></div><p class="mt-2 text-gray-600">Getting answer from Nutrina...</p></div>';
+        responseContainer.classList.remove('hidden');
+        setTimeout(checkIframeContent, 1000);
+      });
+      function checkIframeContent() {
+        try {
+          const doc = iframe.contentDocument || iframe.contentWindow.document;
+          const res = doc.querySelector('#nlp_diet,.nlp-diet,.diet-assistant-response');
+          if (res) {
+            responseDiv.innerHTML = res.innerHTML;
+            responseContainer.classList.remove('hidden');
+          } else {
+            setTimeout(checkIframeContent, 1000);
+          }
+        } catch(e) {
+          responseDiv.innerHTML = "<p>Your question has been submitted. Please check Nutrina's response below the form.</p>";
+          iframe.style.display = 'block';
+          iframe.style.height = '240px';
+        }
+      }
+      // Sample question bind
+      const samples = document.querySelectorAll('.sample-question');
+      samples.forEach(q=>{
+        q.addEventListener('click',()=>{
+          userQueryInput.value = q.textContent;
+          form.submit();
+        })
+      });
+    });
+  </script>
+</body>
+</html>

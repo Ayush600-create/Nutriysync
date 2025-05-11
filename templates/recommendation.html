@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Your Smart Health Report</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(to right, #74ebd5, #ACB6E5);
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 700px;
+            margin: 50px auto;
+            background: white;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        h1, h2 {
+            color: #005f73;
+            text-align: center;
+        }
+
+        p {
+            font-size: 18px;
+            line-height: 1.6;
+            color: #333;
+        }
+
+        .btn-back {
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        .btn-back a {
+            text-decoration: none;
+            background-color: #0077b6;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 6px;
+            transition: 0.3s;
+        }
+
+        .btn-back a:hover {
+            background-color: #023e8a;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Hey, {{ user_id }}! Here's Your Health Report 🩺</h1>
+
+        <p><strong>BMI:</strong> {{ bmi }} ({{ category }})</p>
+        <p><strong>BMR (Calories needed/day):</strong> {{ bmr }}</p>
+
+        <h2>🥗 Diet Recommendation</h2>
+        <p>{{ diet }}</p>
+
+        <h2>💪 Suggested Exercise</h2>
+        <p>{{ exercise }}</p>
+
+        <h2>🍽️ Daily Macronutrient Split</h2>
+        <p><strong>Protein:</strong> {{ protein }}g</p>
+        <p><strong>Carbohydrates:</strong> {{ carbs }}g</p>
+        <p><strong>Fats:</strong> {{ fats }}g</p>
+
+        <h2>🤖 Smart Assistant Suggests</h2>
+        <p>{{ nlp_response }}</p>
+
+        <div class="btn-back">
+            <a href="/">← Back to Home</a>
+        </div>
+    </div>
+</body>
+</html>
